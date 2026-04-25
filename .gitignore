@@ -1,0 +1,22 @@
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node
+node_modules/
+dist/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local

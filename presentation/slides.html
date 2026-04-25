@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faisal Baeshen — Assignment 4 Slides</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-primary:    #000000;
+      --bg-secondary:  #0a0a0a;
+      --bg-card:       #141414;
+      --text-primary:  #F6F6F6;
+      --text-secondary:#CFFFE2;
+      --accent:        #A2D5C6;
+      --accent-hover:  #b8e4d6;
+      --accent-light:  rgba(162, 213, 198, 0.15);
+      --border:        #1f1f1f;
+      --glow:          rgba(162, 213, 198, 0.08);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow: hidden;
+      scroll-behavior: smooth;
+    }
+
+    code, kbd, pre { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+    /* ---------- Deck wrapper ---------- */
+    .deck {
+      height: 100vh;
+      width: 100vw;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scrollbar-width: none;
+    }
+    .deck::-webkit-scrollbar { display: none; }
+
+    /* ---------- Single slide ---------- */
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 0% 0%, var(--glow), transparent 50%),
+        radial-gradient(circle at 100% 100%, var(--glow), transparent 50%),
+        var(--bg-primary);
+    }
+
+    .slide-inner {
+      max-width: 1100px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Watermark behind every slide */
+    .slide::before {
+      content: attr(data-num);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      font-size: clamp(14rem, 30vw, 28rem);
+      font-weight: 900;
+      color: transparent;
+      background: linear-gradient(135deg, rgba(162, 213, 198, 0.05), rgba(207, 255, 226, 0.02));
+      -webkit-background-clip: text;
+      background-clip: text;
+      letter-spacing: -0.04em;
+      pointer-events: none;
+      z-index: 0;
+      user-select: none;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ---------- Typography ---------- */
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border: 1px solid var(--accent);
+      border-radius: 50px;
+      margin-bottom: 24px;
+      background: var(--accent-light);
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5.6vw, 4.8rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+
+    h3 {
+      font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    p, li {
+      font-size: clamp(1rem, 1.3vw, 1.15rem);
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+
+    .lead {
+      font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+      line-height: 1.55;
+      color: var(--text-secondary);
+      max-width: 800px;
+    }
+
+    .accent { color: var(--accent); }
+    .text-primary { color: var(--text-primary); }
+
+    /* ---------- Slide 1 — Title ---------- */
+    .slide-title { text-align: left; }
+    .slide-title .meta {
+      display: flex;
+      gap: 20px;
+      margin-top: 36px;
+      flex-wrap: wrap;
+      align-items: center;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    .slide-title .meta .dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+    }
+
+    /* ---------- Slide 2 — Goal ---------- */
+    .slide-goal .lead {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--text-primary);
+      max-width: 900px;
+    }
+    .slide-goal .lead .accent {
+      position: relative;
+    }
+    .slide-goal .lead .accent::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: -2px;
+      height: 4px;
+      background: var(--accent);
+      opacity: 0.4;
+      border-radius: 2px;
+    }
+
+    /* ---------- Slide 3 — Tech stack ---------- */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 36px;
+    }
+    .stack-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s ease;
+    }
+    .stack-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 20%; right: 20%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.5;
+    }
+    .stack-card .icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .stack-card h3 { color: var(--accent); font-size: 1.05rem; margin-bottom: 4px; }
+    .stack-card p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45; }
+
+    /* ---------- Slide 4 — Demo placeholder ---------- */
+    .slide-demo { text-align: center; }
+    .slide-demo .demo-card {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 56px 48px;
+      background: var(--bg-card);
+      border: 1px solid var(--accent);
+      border-radius: 24px;
+      box-shadow: 0 0 60px rgba(162, 213, 198, 0.08);
+    }
+    .slide-demo .play-icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--bg-primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.6rem;
+      box-shadow: 0 8px 30px rgba(162, 213, 198, 0.4);
+    }
+    .slide-demo .checklist {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px 28px;
+      margin-top: 32px;
+      text-align: left;
+    }
+    .slide-demo .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+    .slide-demo .check-item .tick {
+      width: 22px; height: 22px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--accent-light);
+      color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    /* ---------- Slide 5 — Innovation ---------- */
+    .innovation-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+      margin-top: 32px;
+    }
+    .innov-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 26px 24px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s ease;
+    }
+    .innov-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 15%; right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+    .innov-card .badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bg-primary);
+      background: var(--accent);
+      padding: 3px 10px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .innov-card h3 {
+      font-size: 1.2rem;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .innov-card h3 .emoji { font-size: 1.4rem; }
+    .innov-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ---------- Slide 6 — Architecture ---------- */
+    .arch-wrap {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      max-width: 880px;
+      margin-left: auto; margin-right: auto;
+    }
+    .arch-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 18px;
+      align-items: center;
+    }
+    .arch-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      text-align: center;
+      transition: border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .arch-box.primary {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+    .arch-box .label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .arch-box .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .arch-box .sub {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    .arch-arrow {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent, var(--accent));
+      position: relative;
+      opacity: 0.7;
+    }
+    .arch-arrow::before, .arch-arrow::after {
+      content: '◀';
+      position: absolute;
+      color: var(--accent);
+      top: -10px;
+      font-size: 0.85rem;
+    }
+    .arch-arrow::before { left: -4px; }
+    .arch-arrow::after { right: -4px; content: '▶'; }
+
+    .arch-side {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    /* ---------- Slide 7 — What's next ---------- */
+    .next-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 32px;
+      max-width: 800px;
+    }
+    .next-item {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 18px;
+      align-items: start;
+      padding: 18px 22px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      border-left: 3px solid var(--accent);
+    }
+    .next-item .num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--bg-primary);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+    .next-item h3 {
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .next-item p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ---------- Slide 8 — Thank you ---------- */
+    .slide-end { text-align: center; }
+    .slide-end h1 {
+      font-size: clamp(3.5rem, 8vw, 6.5rem);
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--text-primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 24px;
+    }
+    .slide-end .lead { margin: 0 auto; }
+    .end-links {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+    .end-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      border-radius: 50px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .end-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .end-link.primary {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    .end-kbd-hint {
+      margin-top: 56px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      opacity: 0.6;
+    }
+    kbd {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+    }
+
+    /* ---------- Tag chips ---------- */
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .tag {
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 4px 14px;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border: 1px solid rgba(162, 213, 198, 0.25);
+    }
+
+    /* ---------- Slide indicator (bottom) ---------- */
+    .slide-indicator {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+      pointer-events: auto;
+    }
+    .slide-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0;
+    }
+    .slide-dot:hover { background: var(--accent-light); }
+    .slide-dot.active {
+      background: var(--accent);
+      width: 28px;
+      border-radius: 4px;
+    }
+
+    /* ---------- Slide number (top right) ---------- */
+    .slide-number {
+      position: fixed;
+      top: 24px;
+      right: 28px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      opacity: 0.7;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.08em;
+      z-index: 100;
+    }
+    .slide-number .current { color: var(--accent); font-weight: 700; }
+
+    /* ---------- Brand mark (top left) ---------- */
+    .brand-mark {
+      position: fixed;
+      top: 22px;
+      left: 28px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
+      z-index: 100;
+    }
+    .brand-mark .accent { color: var(--accent); }
+
+    /* ---------- Keyboard nav hint (bottom right) ---------- */
+    .kbd-hint {
+      position: fixed;
+      bottom: 24px;
+      right: 28px;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      opacity: 0.5;
+      z-index: 100;
+    }
+
+    /* ---------- Animations ---------- */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .slide.active .slide-inner > * {
+      animation: fadeUp 0.6s ease-out backwards;
+    }
+    .slide.active .slide-inner > *:nth-child(1) { animation-delay: 0s; }
+    .slide.active .slide-inner > *:nth-child(2) { animation-delay: 0.08s; }
+    .slide.active .slide-inner > *:nth-child(3) { animation-delay: 0.16s; }
+    .slide.active .slide-inner > *:nth-child(4) { animation-delay: 0.24s; }
+    .slide.active .slide-inner > *:nth-child(5) { animation-delay: 0.32s; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px) {
+      .slide { padding: 40px 24px; }
+      .stack-grid { grid-template-columns: repeat(2, 1fr); }
+      .innovation-grid { grid-template-columns: 1fr; }
+      .arch-row { grid-template-columns: 1fr; }
+      .arch-arrow { width: 2px; height: 30px; transform: rotate(90deg); }
+      .arch-side { grid-template-columns: 1fr; }
+      .slide-demo .checklist { grid-template-columns: 1fr; }
+      .brand-mark, .slide-number, .kbd-hint { display: none; }
+    }
+
+    /* ---------- Print: one slide per page ---------- */
+    @media print {
+      @page { size: 1280px 720px; margin: 0; }
+      html, body { overflow: visible; height: auto; }
+      .deck { overflow: visible; height: auto; scroll-snap-type: none; }
+      .slide {
+        page-break-after: always;
+        break-after: page;
+        height: 720px;
+        width: 1280px;
+      }
+      .slide:last-child { page-break-after: auto; }
+      .slide-indicator, .slide-number, .brand-mark, .kbd-hint { display: none !important; }
+      .slide.active .slide-inner > * { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="brand-mark">F<span class="accent">.</span></div>
+  <div class="slide-number"><span class="current" id="num-current">01</span> / <span id="num-total">08</span></div>
+
+  <div class="deck" id="deck">
+
+    <!-- ============================================
+         SLIDE 1 — Title
+         ============================================ -->
+    <section class="slide slide-title" data-num="01">
+      <div class="slide-inner">
+        <span class="eyebrow">Assignment 4 · Final Submission</span>
+        <h1>
+          Personal Portfolio<br />
+          <span class="accent">Web Application</span>
+        </h1>
+        <p class="lead">
+          A polished, production-ready React portfolio that ties together
+          everything from the course — built to be shipped, not just submitted.
+        </p>
+        <div class="meta">
+          <span><strong class="text-primary">Faisal Baeshen</strong></span>
+          <span class="dot"></span>
+          <span>KFUPM · Computer Engineering</span>
+          <span class="dot"></span>
+          <span>Student ID 202261280</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SLIDE 2 — Goal
+         ============================================ -->
+    <section class="slide slide-goal" data-num="02">
+      <div class="slide-inner">
+        <span class="eyebrow">The Goal</span>
+        <p class="lead">
+          Tie everything from the course into <span class="accent">one finished product</span> —
+          a portfolio that feels like a real website, not a homework assignment.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SLIDE 3 — Tech Stack
+         ============================================ -->
+    <section class="slide slide-stack" data-num="03">
+      <div class="slide-inner">
+        <span class="eyebrow">Tech Stack</span>
+        <h2>Built with proven, lightweight tools.</h2>
+        <p class="lead" style="max-width: 720px;">
+          No UI library, no heavy frameworks. Just React 19, Vite, and hand-written
+          CSS that I fully understand.
+        </p>
+
+        <div class="stack-grid">
+          <div class="stack-card">
+            <span class="icon">⚛️</span>
+            <h3>React 19</h3>
+            <p>Hooks-only architecture. StrictMode catches double-effect issues.</p>
+          </div>
+          <div class="stack-card">
+            <span class="icon">⚡</span>
+            <h3>Vite 8</h3>
+            <p>Sub-second cold starts and Rollup-based production build.</p>
+          </div>
+          <div class="stack-card">
+            <span class="icon">🎨</span>
+            <h3>CSS Variables</h3>
+            <p>Theme system in 30 lines — no Tailwind, no styled-components.</p>
+          </div>
+          <div class="stack-card">
+            <span class="icon">🐙</span>
+            <h3>GitHub REST API</h3>
+            <p>Live repo data with stats aggregation, sorted by stars.</p>
+          </div>
+          <div class="stack-card">
+            <span class="icon">🎲</span>
+            <h3>Useless Facts API</h3>
+            <p>Public API with full loading / error / empty states.</p>
+          </div>
+          <div class="stack-card">
+            <span class="icon">💾</span>
+            <h3>localStorage</h3>
+            <p>Theme + visitor name persistence across sessions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SLIDE 4 — Live Demo Marker
+         ============================================ -->
+    <section class="slide slide-demo" data-num="04">
+      <div class="slide-inner">
+        <div class="demo-card">
+          <div class="play-icon">▶</div>
+          <span class="eyebrow">Live Demonstration</span>
+          <h2 style="margin-top: 12px;">Switch to the running site →</h2>
+          <p class="lead" style="margin: 16px auto 0;">
+            The next ~3 minutes are a live walk-through.
+            Reference checklist below.
+          </p>
+
+          <div class="checklist">
+            <div class="check-item"><span class="tick">✓</span> Hero · time-of-day greeting · live timer</div>
+            <div class="check-item"><span class="tick">✓</span> Projects · search + filter + sort</div>
+            <div class="check-item"><span class="tick">✓</span> GitHub repos via live API</div>
+            <div class="check-item"><span class="tick">✓</span> Fun fact · refresh button</div>
+            <div class="check-item"><span class="tick">✓</span> Contact form · validation + toast</div>
+            <div class="check-item"><span class="tick">✓</span> ⌘K command palette</div>
+            <div class="check-item"><span class="tick">✓</span> Chat assistant widget</div>
+            <div class="check-item"><span class="tick">✓</span> Print-as-PDF résumé mode</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SLIDE 5 — Innovation
+         ============================================ -->
+    <section class="slide slide-innovation" data-num="05">
+      <div class="slide-inner">
+        <span class="eyebrow">Innovation</span>
+        <h2>Things I'm proudest of.</h2>
+        <p class="lead" style="max-width: 760px;">
+          Beyond the rubric basics, four features turn this from a static portfolio
+          into something that feels alive.
+        </p>
+
+        <div class="innovation-grid">
+          <div class="innov-card">
+            <span class="badge">Keyboard-first</span>
+            <h3><span class="emoji">⌨️</span> Command Palette</h3>
+            <p>Press <kbd>Ctrl</kbd>+<kbd>K</kbd> anywhere — twelve commands, arrow-key navigation, just like Linear or VS Code.</p>
+          </div>
+          <div class="innov-card">
+            <span class="badge">Conversational</span>
+            <h3><span class="emoji">💬</span> Chat Assistant</h3>
+            <p>Rule-based bot that answers questions about my work — typing indicator, contextual scroll-to-section actions, zero tracking.</p>
+          </div>
+          <div class="innov-card">
+            <span class="badge">Dual-purpose</span>
+            <h3><span class="emoji">📄</span> Print-as-PDF Résumé</h3>
+            <p>Same HTML reflows to a clean black-on-white résumé — no separate PDF file required.</p>
+          </div>
+          <div class="innov-card">
+            <span class="badge">Hidden</span>
+            <h3><span class="emoji">🎮</span> Konami Easter Egg</h3>
+            <p><kbd>↑</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd><kbd>←</kbd><kbd>→</kbd><kbd>B</kbd><kbd>A</kbd> — confetti and a thank-you card for the curious.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SLIDE 6 — Architecture
+         ============================================ -->
+    <section class="slide slide-arch" data-num="06">
+      <div class="slide-inner">
+        <span class="eyebrow">Architecture</span>
+        <h2>Client-side only. No backend.</h2>
+        <p class="lead" style="max-width: 760px;">
+          Static HTML + a 72 KB gzipped React bundle. Everything dynamic is
+          fetched directly from public APIs in the browser.
+        </p>
+
+        <div class="arch-wrap">
+          <div class="arch-row">
+            <div class="arch-box">
+              <div class="label">User</div>
+              <div class="value">Browser tab</div>
+              <div class="sub">Chrome · Edge · Firefox · Safari</div>
+            </div>
+            <div class="arch-arrow"></div>
+            <div class="arch-box primary">
+              <div class="label">App</div>
+              <div class="value">React 19 · Vite Build</div>
+              <div class="sub">15 components · 72 KB gz</div>
+            </div>
+          </div>
+
+          <div class="arch-side">
+            <div class="arch-box">
+              <div class="label">External Data</div>
+              <div class="value">api.github.com</div>
+              <div class="sub">Live repos + stats</div>
+            </div>
+            <div class="arch-box">
+              <div class="label">External Data</div>
+              <div class="value">uselessfacts.jsph.pl</div>
+              <div class="sub">Random facts</div>
+            </div>
+            <div class="arch-box">
+              <div class="label">Persistence</div>
+              <div class="value">localStorage</div>
+              <div class="sub">Theme + visitor name</div>
+            </div>
+            <div class="arch-box">
+              <div class="label">Hosting</div>
+              <div class="value">GitHub Pages</div>
+              <div class="sub">CI via GitHub Actions</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tag-row" style="justify-content: center; margin-top: 28px;">
+          <span class="tag">SPA</span>
+          <span class="tag">No backend</span>
+          <span class="tag">PWA-ready</span>
+          <span class="tag">A11y-first</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SLIDE 7 — What's next
+         ============================================ -->
+    <section class="slide slide-next" data-num="07">
+      <div class="slide-inner">
+        <span class="eyebrow">Future Work</span>
+        <h2>What I'd add next.</h2>
+        <p class="lead" style="max-width: 760px;">
+          The site is shippable today. These are the things I'd build before
+          calling it "version 2".
+        </p>
+
+        <div class="next-list">
+          <div class="next-item">
+            <div class="num">1</div>
+            <div>
+              <h3>Real contact form backend</h3>
+              <p>Wire up EmailJS or Formspree so the form actually sends — about half a day of work.</p>
+            </div>
+          </div>
+          <div class="next-item">
+            <div class="num">2</div>
+            <div>
+              <h3>LLM-backed chat assistant</h3>
+              <p>Swap the rule-based matcher for a Claude / OpenAI call gated behind an API key.</p>
+            </div>
+          </div>
+          <div class="next-item">
+            <div class="num">3</div>
+            <div>
+              <h3>Image optimisation pass</h3>
+              <p>Convert the 600–800 KB project PNGs to AVIF — shaves ~1.5 MB off first load.</p>
+            </div>
+          </div>
+          <div class="next-item">
+            <div class="num">4</div>
+            <div>
+              <h3>Full Arabic / English bilingual support</h3>
+              <p>The hero already has an Arabic watermark — full i18n is the natural next step.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SLIDE 8 — Thank you
+         ============================================ -->
+    <section class="slide slide-end" data-num="08">
+      <div class="slide-inner">
+        <span class="eyebrow">Thank you</span>
+        <h1>Questions?</h1>
+        <p class="lead">
+          The repository, live demo, and full documentation are linked below.
+          And yes — once you're on the live site, press <kbd>Ctrl</kbd>+<kbd>K</kbd>.
+        </p>
+
+        <div class="end-links">
+          <a class="end-link primary" href="https://github.com/Faisal-M2" target="_blank" rel="noopener noreferrer">
+            🔗 GitHub Repository
+          </a>
+          <a class="end-link" href="https://www.linkedin.com/in/faisal-baeshen/" target="_blank" rel="noopener noreferrer">
+            💼 LinkedIn
+          </a>
+          <a class="end-link" href="mailto:faisal.baeshen@kfupm.edu.sa">
+            ✉️ faisal.baeshen@kfupm.edu.sa
+          </a>
+        </div>
+
+        <p class="end-kbd-hint">
+          Faisal Baeshen · Assignment 4 · Computer Engineering, KFUPM
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Bottom slide-dot indicator -->
+  <div class="slide-indicator" id="indicator"></div>
+
+  <!-- Bottom-right keyboard hint -->
+  <div class="kbd-hint">
+    <kbd>←</kbd><kbd>→</kbd> navigate · <kbd>F</kbd> fullscreen · <kbd>P</kbd> print
+  </div>
+
+  <script>
+    const deck = document.getElementById('deck');
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const indicator = document.getElementById('indicator');
+    const numCurrent = document.getElementById('num-current');
+    const numTotal = document.getElementById('num-total');
+
+    numTotal.textContent = String(slides.length).padStart(2, '0');
+
+    // Build slide-dot indicator
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'slide-dot';
+      dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      dot.addEventListener('click', () => goTo(i));
+      indicator.appendChild(dot);
+    });
+
+    let currentIndex = 0;
+
+    function setActive(i) {
+      currentIndex = i;
+      slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+      indicator.querySelectorAll('.slide-dot').forEach((d, idx) => {
+        d.classList.toggle('active', idx === i);
+      });
+      numCurrent.textContent = String(i + 1).padStart(2, '0');
+    }
+
+    function goTo(i) {
+      const clamped = Math.max(0, Math.min(slides.length - 1, i));
+      slides[clamped].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setActive(clamped);
+    }
+
+    // Track active slide on scroll
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const idx = slides.indexOf(entry.target);
+            if (idx !== -1) setActive(idx);
+          }
+        });
+      },
+      { threshold: [0.5] }
+    );
+    slides.forEach((s) => observer.observe(s));
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+        case ' ':
+        case 'PageDown':
+          e.preventDefault();
+          goTo(currentIndex + 1);
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+        case 'PageUp':
+          e.preventDefault();
+          goTo(currentIndex - 1);
+          break;
+        case 'Home':
+          e.preventDefault();
+          goTo(0);
+          break;
+        case 'End':
+          e.preventDefault();
+          goTo(slides.length - 1);
+          break;
+        case 'f':
+        case 'F':
+          e.preventDefault();
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen?.();
+          } else {
+            document.exitFullscreen?.();
+          }
+          break;
+        case 'p':
+        case 'P':
+          if (!e.ctrlKey && !e.metaKey) {
+            e.preventDefault();
+            window.print();
+          }
+          break;
+      }
+    });
+
+    // Init
+    setActive(0);
+  </script>
+</body>
+</html>
