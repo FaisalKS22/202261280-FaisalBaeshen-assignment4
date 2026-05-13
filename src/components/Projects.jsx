@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
-import volunteerImg from '../assets/image copy.png'
+import volunteerImg from '../assets/Screenshot 2026-05-13 233535.png'
 import kashetImg from '../assets/ChatGPT Image Feb 14, 2026, 11_46_25 PM.png'
 import taskManagerImg from '../assets/rbnx-task-manager.png'
 
@@ -13,8 +13,8 @@ const projectsData = [
     alt: 'Volunteer Work Unit web screenshot',
     date: '2025-09-15',
     level: 'Advanced',
-    repo: 'https://github.com/Faisal-M2',
-    live: null,
+    repo: null,
+    live: 'https://kvwu.org/',
   },
   {
     title: 'Kashet App',
@@ -37,8 +37,9 @@ const projectsData = [
     alt: 'RoboNexus app screenshot',
     date: '2026-01-10',
     level: 'Beginner',
-    repo: 'https://github.com/Faisal-M2',
+    repo: null,
     live: null,
+    download: 'https://apps.apple.com/sa/app/kfupm-robonexus/id6759730987',
   },
 ]
 
@@ -244,6 +245,17 @@ function Projects() {
                         aria-label={`${project.title} source code`}
                       >
                         Code ↗
+                      </a>
+                    )}
+                    {project.download && (
+                      <a
+                        href={project.download}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="card-link"
+                        aria-label={`${project.title} download`}
+                      >
+                        Download ↗
                       </a>
                     )}
                   </div>

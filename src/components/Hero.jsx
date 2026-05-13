@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import avatarImg from '../assets/WhatsApp Image 2026-02-14 at 9.59.59 PM (1).jpeg'
+import resumePdf from '../assets/FaisalBaeshen_Resume.pdf'
 
 const phrases = ['Aspiring Web Developer', 'Tech Enthusiast', 'AI Specialist']
 
@@ -78,20 +79,20 @@ function Hero({ visitorName, onNamePrompt }) {
           <div className="hero-buttons">
             <a href="#contact" className="btn btn-primary">Say Hello</a>
             <a href="#projects" className="btn btn-outline">View My Work</a>
-            <button
-              type="button"
+            <a
+              href={resumePdf}
+              download="FaisalBaeshen_Resume.pdf"
               className="btn btn-ghost"
-              onClick={() => window.print()}
-              aria-label="Print or save portfolio as PDF résumé"
+              aria-label="Download CV as PDF"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 6 2 18 2 18 9" />
-                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                <rect x="6" y="14" width="12" height="8" />
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
-              Print / PDF
-            </button>
+              Resume
+            </a>
           </div>
         </div>
 
